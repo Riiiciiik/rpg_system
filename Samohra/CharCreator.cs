@@ -14,7 +14,7 @@ namespace Samohra
         bool _keepPlaying = true;
         string _keepChar;
         bool _keepCharacter = false;
-        int killStreak = 0;
+        private int killStreak { get; set; }
         
 
         public void Game() {
@@ -23,6 +23,7 @@ namespace Samohra
                 if (_keepCharacter == false)
                 {
                     CreateChar();
+
                 }                     
             CreateEnemy();
             showEnemy();
@@ -68,7 +69,7 @@ namespace Samohra
 
         private void againPrompt()
         {
-            string choice;
+           string choice;
             
             if (player.hp == 0)
             {
@@ -94,7 +95,10 @@ namespace Samohra
                     {
                         _keepCharacter = true;
                         player.statsToDefault();
-                        killStreak = 0;
+                    }
+                    else
+                    {
+                        _keepCharacter = false;
                     }
                 }
                 else
@@ -218,7 +222,8 @@ namespace Samohra
         }
 
         public void CreateChar()
-        {                                  
+        {
+            killStreak = 0;                                
             rng = new Random();
             Console.Clear();     
             Console.WriteLine("*****=====*****=====*****=====*****====*****=====*****=====*****=====*****====*****=====*****\n");
@@ -234,7 +239,8 @@ namespace Samohra
 
             Console.ReadLine();
             Console.Clear();
-            changeStats(player.name, player.race, player.prof);                                  
+            changeStats(player.name, player.race, player.prof);
+            wantToChange(player.name, player.race, player.prof);
         }
         public void CreateEnemy()
         {
@@ -262,8 +268,8 @@ namespace Samohra
                 Console.WriteLine("*****=====*****=====*****=====*****====*****=====*****=====*****=====*****====*****=====*****");
                 c = Prompt(2);
                 setStats(a, b, c);
-                player.showDetails();                
-                wantToChange(a,b,c);               
+                player.showDetails();               
+                              
                             
         }
         private void wantToChange(string a, string b, string c)
@@ -271,18 +277,18 @@ namespace Samohra
             bool want = true;
             while (want)
             {                
-                Console.Write("Now, do you want to change anything before we proceed? Y or N...\nThis will overwrite the current data!\n");
+                Console.Write("Now, do you want to change anything before we proceed? Enter to continue or Y to change...\nThis will overwrite the current data!\n");
                 string choice = Console.ReadLine().ToLower();                
                 switch (choice)
                     {
                     case "y":
                         changeStats(a, b, c);
                         break;
-                    case "n":
+                    case "":
                         want = false;
                         break;
                     default:
-                        Console.WriteLine("Please type Y or N only..");
+                        Console.WriteLine("Please type Y or press Enter..");
                         break;                            
                     }
                 }
